@@ -223,6 +223,35 @@ describe('Settings', function desc() {
             });
         });
 
+        describe('Enable Native Titlebar', () => {
+            it('MM-T4399 should save selected option', async () => {
+                const ID_INPUT_ENABLE_NATIVE_TITLEBAR = '#CheckSetting_enableNativeTitlebar button';
+                this.app.evaluate(({ipcMain}, showWindow) => {
+                    ipcMain.emit(showWindow);
+                }, SHOW_SETTINGS_WINDOW);
+                const settingsWindow = await this.app.waitForEvent('window', {
+                    predicate: (window) => window.url().includes('settings'),
+                });
+                await settingsWindow.waitForSelector('#settingCategoryButton-advanced');
+                await settingsWindow.click('#settingCategoryButton-advanced');
+                console.log('balls');
+                const selected = await settingsWindow.isChecked('#checkSetting-enableNativeTitlebar');
+                selected.should.equal(true); // default is true
+
+                await settingsWindow.click(ID_INPUT_ENABLE_NATIVE_TITLEBAR);
+                await settingsWindow.waitForSelector('.SettingsModal__saving :text("Saving...")');
+                await settingsWindow.waitForSelector('.SettingsModal__saving :text("Changes saved")');
+                const config0 = JSON.parse(fs.readFileSync(env.configFilePath, 'utf-8'));
+                config0.enableNativeTitlebar.should.equal(false);
+
+                await settingsWindow.click(ID_INPUT_ENABLE_NATIVE_TITLEBAR);
+                await settingsWindow.waitForSelector('.SettingsModal__saving :text("Saving...")');
+                await settingsWindow.waitForSelector('.SettingsModal__saving :text("Changes saved")');
+                const config1 = JSON.parse(fs.readFileSync(env.configFilePath, 'utf-8'));
+                config1.enableNativeTitlebar.should.equal(true);
+            });
+        });
+
         if (process.platform !== 'darwin') {
             describe('Enable automatic check for updates', () => {
                 it('MM-T4549 should save selected option', async () => {

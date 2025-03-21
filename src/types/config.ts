@@ -60,6 +60,7 @@ export type ConfigV3 = {
     logLevel?: string;
     appLanguage?: string;
     enableMetrics?: boolean;
+    enableNativeTitlebar?: boolean;
 }
 
 export type ConfigV2 =

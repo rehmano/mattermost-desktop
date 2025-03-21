@@ -251,6 +251,10 @@ export class Config extends EventEmitter {
         return this.combinedData?.enableMetrics;
     }
 
+    get enableNativeTitlebar() {
+        return this.combinedData?.enableNativeTitlebar ?? defaultPreferences.enableNativeTitlebar;
+    }
+
     /**
      * Gets the servers from registry into the config object and reload
      *

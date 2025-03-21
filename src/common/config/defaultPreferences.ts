@@ -52,6 +52,7 @@ const defaultPreferences: ConfigV3 = {
     startInFullscreen: false,
     logLevel: 'info',
     enableMetrics: true,
+    enableNativeTitlebar: false,
 };
 
 export default defaultPreferences;

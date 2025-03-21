@@ -77,7 +77,7 @@ export class MainWindow extends EventEmitter {
             minHeight: MINIMUM_WINDOW_HEIGHT,
             frame: !this.isFramelessWindow(),
             fullscreen: this.shouldStartFullScreen(),
-            titleBarStyle: 'hidden' as const,
+            titleBarStyle: Config.enableNativeTitlebar === true ? 'default' as const : 'hidden' as const,
             titleBarOverlay: this.getTitleBarOverlay(),
             trafficLightPosition: {x: 12, y: 12},
             backgroundColor: '#000', // prevents blurry text: https://electronjs.org/docs/faq#the-font-looks-blurry-what-is-this-and-what-can-i-do
@@ -477,8 +477,10 @@ export class MainWindow extends EventEmitter {
     };
 
     private handleUpdateTitleBarOverlay = () => {
-        if (process.platform === 'linux') {
-            this.win?.setTitleBarOverlay?.(this.getTitleBarOverlay());
+        if (Config.enableNativeTitlebar !== true) {
+            if (process.platform === 'linux') {
+                this.win?.setTitleBarOverlay?.(this.getTitleBarOverlay());
+            }
         }
     };
 }

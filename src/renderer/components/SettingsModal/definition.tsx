@@ -441,6 +441,32 @@ const definition: (intl: IntlShape) => Promise<SettingsDefinition> = async (intl
                         ),
                     },
                 },
+                {
+                    id: 'enableNativeTitlebar',
+                    component: CheckSetting,
+                    props: {
+                        label: (
+                            <FormattedMessage
+                                id='renderer.components.settingsPage.enableNativeTitlebar'
+                                defaultMessage='Enable the native title bar'
+                            />
+                        ),
+                        subLabel: (
+                            <>
+                                <FormattedMessage
+                                    id='renderer.components.settingsPage.enableNativeTitlebar.description'
+                                    defaultMessage='If enabled, {appName} UI will use the native title bar of the OS.'
+                                    values={{appName: (await window.desktop.getVersion()).name}}
+                                />
+                                &nbsp;
+                                <FormattedMessage
+                                    id='renderer.components.settingsPage.afterRestart'
+                                    defaultMessage='Setting takes effect after restarting the app.'
+                                />
+                            </>
+                        ),
+                    },
+                },
             ],
         },
     };

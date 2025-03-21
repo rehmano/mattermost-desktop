@@ -229,6 +229,8 @@
   "renderer.components.settingsPage.downloadLocation.description": "Specify the folder where files will download.",
   "renderer.components.settingsPage.enableHardwareAcceleration": "Use GPU hardware acceleration",
   "renderer.components.settingsPage.enableHardwareAcceleration.description": "If enabled, {appName} UI is rendered more efficiently but can lead to decreased stability for some systems.",
+  "renderer.components.settingsPage.enableNativeTitlebar": "Enable the native title bar",
+  "renderer.components.settingsPage.enableNativeTitlebar.description": "If enabled, {appName} UI will use the native title bar of the OS.",
   "renderer.components.settingsPage.enableMetrics": "Send anonymous usage data to your configured servers",
   "renderer.components.settingsPage.enableMetrics.description": "Sends usage data about the application and its performance to your configured servers that accept it.",
   "renderer.components.settingsPage.flashWindow": "Flash taskbar icon when a new message is received",
