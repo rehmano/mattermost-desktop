@@ -100,11 +100,21 @@ export class ViewManager {
         if (ServerManager.hasServers()) {
             // TODO: This init should be happening elsewhere, future refactor will fix this
             ServerViewState.init();
-            await updateServerInfos(ServerManager.getAllServers());
             LoadingScreen.show();
-            ServerManager.getAllServers().forEach((server) => this.loadServer(server));
+
+            // We need to wait for the current server to be initialized before showing anything
+            // But we can initialize other servers in parallel
+            const otherServers = ServerManager.getAllServers().filter((server) => server.id !== ServerViewState.getCurrentServer().id);
+            const currentServer = ServerViewState.getCurrentServer();
+            otherServers.forEach((server) => this.initServer(server));
+            await this.initServer(currentServer);
             this.showInitial();
         }
+    };
+
+    private initServer = async (server: MattermostServer) => {
+        await updateServerInfos([server]);
+        this.loadServer(server);
     };
 
     private handleDeveloperModeUpdated = (json: DeveloperSettings) => {
@@ -372,7 +382,8 @@ export class ViewManager {
 
             // This is a workaround for an issue where the URL view would steal focus from the main window
             // See: https://github.com/electron/electron/issues/42339
-            urlView.webContents.on('focus', () => {
+            // @ts-expect-error Using an undocumented event that fires last when the URL view pops up
+            urlView.webContents.once('ready-to-show', () => {
                 log.debug('URL view focus prevented');
                 this.getCurrentView()?.focus();
             });
